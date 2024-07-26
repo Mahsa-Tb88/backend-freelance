@@ -1,5 +1,6 @@
 export async function uploadFile(req, res) {
   const filename = req.file.filename;
+  console.log("uploadfile")
 
   const body = {
     filename: filename,

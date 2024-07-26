@@ -1,4 +1,3 @@
-console.clear();
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -15,15 +14,15 @@ import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 app.use(express.json());
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(responseMiddleWares);
 app.use(miscRoutes);
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use("/auth", authRoutes);
 app.use("/api/users", userRoutes);
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 try {
   await mongoose.connect(process.env.MONGO_URL);

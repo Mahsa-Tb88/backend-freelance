@@ -1,3 +1,6 @@
+console.log("response")
+
+
 export default function responseMiddleWare(req, res, next) {
   res.success = (message = " ", body = null, code = 200) => {
     res.status(code).json({

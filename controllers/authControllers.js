@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/userSchema.js";
+
 export async function registerUser(req, res) {
   const {
     username,

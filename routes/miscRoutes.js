@@ -2,8 +2,9 @@ import express from "express";
 import uploadMiddleWare from "../middlewares/uploadMiddleWare.js";
 import { uploadFile } from "../controllers/miscControllers.js";
 
+console.log("miscroutes....");
+
 const router = express.Router();
-console.log("000");
 router.post("/uploads", uploadMiddleWare, uploadFile);
 
 router.use((err, req, res, next) => {
