@@ -1,5 +1,4 @@
 import path from "path";
-import { fileURLToPath } from "url";
 
 import express from "express";
 import mongoose from "mongoose";
@@ -11,12 +10,14 @@ import miscRoutes from "./routes/miscRoutes.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import corsMiddleware from "./middlewares/corsMiddleware.js";
 
 const app = express();
 app.use(express.json());
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 app.use(responseMiddleWares);
+app.use(corsMiddleware);
 app.use(miscRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
