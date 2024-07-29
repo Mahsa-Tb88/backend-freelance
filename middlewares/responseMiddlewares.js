@@ -1,4 +1,3 @@
-console.log("response")
 
 
 export default function responseMiddleWare(req, res, next) {

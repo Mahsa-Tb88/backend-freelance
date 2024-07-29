@@ -11,6 +11,8 @@ import miscRoutes from "./routes/miscRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import corsMiddleware from "./middlewares/corsMiddleware.js";
+import { checkToken } from "./middlewares/authMiddleWare.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(express.json());
@@ -18,6 +20,8 @@ const __dirname = import.meta.dirname;
 
 app.use(responseMiddleWares);
 app.use(corsMiddleware);
+app.use(cookieParser());
+app.use(checkToken);
 app.use(miscRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
