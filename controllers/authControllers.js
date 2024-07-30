@@ -78,7 +78,10 @@ export async function loginUser(req, res) {
 }
 
 export async function signOut(req, res) {
+  console.log("clear cookie");
   if (req.username) {
+    console.log("clear cookie....");
+
     res.clearCookie("token");
     res.success("cookie cleared successfully!", 200);
   }
