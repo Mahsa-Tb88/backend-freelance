@@ -19,9 +19,8 @@ export async function registerUser(req, res) {
       res.fail("Please enter a value for fields.", 402);
       return;
     }
-    const findUser1 = await User.findOne({ username });
-    const findUser2 = await User.findOne({ email });
-    if (findUser1 || findUser2) {
+    const findUser = await User.findOne({ $or: [{ username }, { email }] });
+    if (findUser) {
       res.fail("username or email already exists.");
       return;
     }
@@ -45,6 +44,7 @@ export async function registerUser(req, res) {
 
 export async function loginUser(req, res) {
   const { username, password } = req.body;
+
   if (!username || !password) {
     res.fail("please enter username and password");
     return;
@@ -56,7 +56,6 @@ export async function loginUser(req, res) {
       res.fail("username or password is not valid.", 402);
       return;
     }
-
     const match = await bcryptjs.compare(password, user.password);
     if (!match) {
       res.fail("username or password is not valid.", 402);
@@ -78,7 +77,7 @@ export async function loginUser(req, res) {
 }
 
 export async function signOut(req, res) {
-  console.log("clear cookie");
+  console.log("signout...");
   if (req.username) {
     console.log("clear cookie....");
 

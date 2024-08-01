@@ -9,10 +9,23 @@ export async function checkToken(req, res, next) {
       const user = await User.findOne({ username: decode.username });
       req.username = user.username;
       req.isSeller = user.isSeller;
+      if (req.isSeller) {
+        req.sellerId = user._id.toString();
+      } else {
+        req.userId = user._id.toString();
+      }
       return next();
     } catch (error) {
       return next();
     }
   }
   next();
+}
+
+export async function isSeller(req, res, next) {
+  if (req.isSeller) {
+    next();
+  } else {
+    res.fail("You are not athorized for creating a product", 402);
+  }
 }

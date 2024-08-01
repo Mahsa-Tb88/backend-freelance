@@ -10,6 +10,8 @@ import miscRoutes from "./routes/miscRoutes.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+
 import corsMiddleware from "./middlewares/corsMiddleware.js";
 import { checkToken } from "./middlewares/authMiddleWare.js";
 import cookieParser from "cookie-parser";
@@ -28,6 +30,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
