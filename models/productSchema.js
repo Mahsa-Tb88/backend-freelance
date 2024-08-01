@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  totalStar: {
+    type: Number,
+    default: 1,
+  },
   desc: {
     type: String,
     required: true,

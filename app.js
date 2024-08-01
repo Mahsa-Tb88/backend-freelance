@@ -15,6 +15,7 @@ import productRoutes from "./routes/productRoutes.js";
 import corsMiddleware from "./middlewares/corsMiddleware.js";
 import { checkToken } from "./middlewares/authMiddleWare.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,7 @@ const __dirname = import.meta.dirname;
 
 app.use(responseMiddleWares);
 app.use(corsMiddleware);
+// app.use(cors({ origin: "http://localhost:5173", Credential: true }));
 app.use(cookieParser());
 app.use(checkToken);
 app.use(miscRoutes);
