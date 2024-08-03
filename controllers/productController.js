@@ -118,3 +118,45 @@ export async function updateProduct(req, res) {
     res.fail(error.message, 500);
   }
 }
+
+export async function getAllProducts(req, res) {
+  const page = req.query.page ?? 1;
+  const limit = req.query.limit ?? 3;
+  const categoryGroup = req.query.category ?? "";
+  const sort = req.query.sort ?? "updatedAt";
+  const order = req.query.order ?? "desc";
+  const search = req.query.search ?? "";
+  const startProduct = (page - 1) * limit;
+  const categories = categoryGroup.split(",");
+
+  const query = {
+    $or: [
+      { title: RegExp(search, "i") },
+      { desc: RegExp(search, "i") },
+      { serviceTitle: RegExp(search, "i") },
+      { shortDesc: RegExp(search, "i") },
+    ],
+  };
+
+  if (categoryGroup) {
+    query.category = { $in: categories };
+  }
+
+  try {
+    const all = await Product.countDocuments();
+    const filtered = await Product.countDocuments(query);
+    const products = await Product.find(query)
+      .limit(limit)
+      .skip(startProduct)
+      .sort(order == "asc" ? sort : "-" + sort);
+    res.json({
+      success: true,
+      body: products,
+      message: "products fetch successfully!",
+      totalProducts: { all, filtered },
+      code: 201,
+    });
+  } catch (error) {
+    res.fail(error.message, 500);
+  }
+}
