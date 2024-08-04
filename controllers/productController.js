@@ -125,6 +125,8 @@ export async function getAllProducts(req, res) {
   const categoryGroup = req.query.category ?? "";
   const sort = req.query.sort ?? "updatedAt";
   const order = req.query.order ?? "desc";
+  const minPrice = req.query.min ?? 0
+  const maxPrice = req.query.max ?? 20000;
   const search = req.query.search ?? "";
   const startProduct = (page - 1) * limit;
   const categories = categoryGroup.split(",");
@@ -137,6 +139,9 @@ export async function getAllProducts(req, res) {
       { shortDesc: RegExp(search, "i") },
     ],
   };
+  if (minPrice || maxPrice) {
+    query.price = { $gt: minPrice, $lt: maxPrice };
+  }
 
   if (categoryGroup) {
     query.category = { $in: categories };
