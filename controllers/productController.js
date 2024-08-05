@@ -121,12 +121,13 @@ export async function updateProduct(req, res) {
 
 export async function getAllProducts(req, res) {
   const page = req.query.page ?? 1;
-  const limit = req.query.limit ?? 3;
+  const limit = req.query.limit ?? 7;
   const categoryGroup = req.query.category ?? "";
   const sort = req.query.sort ?? "updatedAt";
   const order = req.query.order ?? "desc";
-  const minPrice = req.query.min ?? 0
-  const maxPrice = req.query.max ?? 20000;
+  const minPrice = req.query.Min ?? 0;
+  const maxPrice = req.query.Max ?? 200000;
+  const star = req.query.star ?? "";
   const search = req.query.search ?? "";
   const startProduct = (page - 1) * limit;
   const categories = categoryGroup.split(",");
@@ -145,6 +146,10 @@ export async function getAllProducts(req, res) {
 
   if (categoryGroup) {
     query.category = { $in: categories };
+  }
+
+  if (star) {
+    query.totalStar = star;
   }
 
   try {
