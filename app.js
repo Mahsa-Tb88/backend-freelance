@@ -1,5 +1,5 @@
 import path from "path";
-
+import { fileURLToPath } from "url";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -16,10 +16,12 @@ import corsMiddleware from "./middlewares/corsMiddleware.js";
 import { checkToken } from "./middlewares/authMiddleWare.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import multer from "multer";
 
 const app = express();
 app.use(express.json());
-const __dirname = import.meta.dirname;
+// const __dirname = import.meta.dirname;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(responseMiddleWares);
 app.use(corsMiddleware);
@@ -33,6 +35,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
+
 
 try {
   await mongoose.connect(process.env.MONGO_URL);

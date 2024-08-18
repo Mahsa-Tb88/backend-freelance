@@ -1,8 +1,9 @@
 import path from "path";
+import { fileURLToPath } from "url";
 import multer from "multer";
 
 const allowedExtensions = ["png", "jpg", "webp", "jpeg", "svg"];
-const __dirname = import.meta.dirname;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
