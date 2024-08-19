@@ -5,6 +5,7 @@ import {
   getProductById,
   updateProduct,
   getAllProducts,
+  deleteProduct,
 } from "../controllers/productController.js";
 import { isSeller } from "../middlewares/authMiddleWare.js";
 
@@ -15,5 +16,6 @@ router.get("/:id", isSeller, getProductById);
 router.get("/seller/:id", isSeller, getAllProductOfSeller);
 router.get("/", getAllProducts);
 router.put("/:id", isSeller, updateProduct);
+router.delete("/:id", isSeller, deleteProduct);
 
 export default router;

@@ -170,3 +170,19 @@ export async function getAllProducts(req, res) {
     res.fail(error.message, 500);
   }
 }
+
+export async function deleteProduct(req, res) {
+  const isValid = mongoose.isValidObjectId(req.params.id);
+  if (!isValid) {
+    res.fail("Its not a valid id.", 402);
+    return;
+  }
+  const id = req.params.id;
+
+  try {
+    await Product.findByIdAndDelete(id);
+    res.success("Your product was deleted successfully!", 200);
+  } catch (error) {
+    res.fail(error.message, 500);
+  }
+}
