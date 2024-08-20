@@ -12,7 +12,7 @@ import { isSeller } from "../middlewares/authMiddleWare.js";
 const router = express.Router();
 
 router.post("/", isSeller, createProduct);
-router.get("/:id", isSeller, getProductById);
+router.get("/:id", getProductById);
 router.get("/seller/:id", isSeller, getAllProductOfSeller);
 router.get("/", getAllProducts);
 router.put("/:id", isSeller, updateProduct);

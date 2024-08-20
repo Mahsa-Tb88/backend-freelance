@@ -52,7 +52,7 @@ export async function getProductById(req, res) {
     return;
   }
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate("sellerId");
     if (!product) {
       res.fail("This product is not exsits.");
     } else {
