@@ -49,7 +49,7 @@ const productSchema = new mongoose.Schema(
       default: 1,
       required: true,
     },
-    addFeature: {
+    features: {
       type: [String],
       default: [],
     },

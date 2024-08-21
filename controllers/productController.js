@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Product from "../models/productSchema.js";
 
 export async function createProduct(req, res) {
+  console.log("create product");
   const {
     title,
     category,
