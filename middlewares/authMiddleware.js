@@ -9,10 +9,11 @@ export async function checkToken(req, res, next) {
       const user = await User.findOne({ username: decode.username });
       req.username = user.username;
       req.isSeller = user.isSeller;
+      req.userId = user._id.toString();
       if (req.isSeller) {
         req.sellerId = user._id.toString();
       } else {
-        req.userId = user._id.toString();
+        req.buyerId = user._id.toString();
       }
       return next();
     } catch (error) {

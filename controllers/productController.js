@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import Product from "../models/productSchema.js";
 
 export async function createProduct(req, res) {
-  console.log("create product");
   const {
     title,
     category,
@@ -13,7 +12,7 @@ export async function createProduct(req, res) {
     shortDesc,
     deliveryTime,
     revisionNumber,
-    addFeature,
+    features,
     price,
   } = req.body;
 
@@ -96,7 +95,7 @@ export async function updateProduct(req, res) {
     const shortDesc = req.body.shortDesc || product.shortDesc;
     const deliveryTime = req.body.deliveryTime || product.deliveryTime;
     const revisionNumber = req.body.revisionNumber || product.revisionNumber;
-    const addFeature = req.body.addFeature || product.addFeature;
+    const features = req.body.features || product.features;
     const price = req.body.price || product.price;
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
       title,
@@ -108,7 +107,7 @@ export async function updateProduct(req, res) {
       shortDesc,
       deliveryTime,
       revisionNumber,
-      addFeature,
+      features,
       price,
     });
     if (!updatedProduct) {

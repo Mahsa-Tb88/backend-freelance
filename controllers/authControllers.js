@@ -13,7 +13,6 @@ export async function registerUser(req, res) {
     phoneNumber,
     desc,
   } = req.body;
-
   try {
     if ((!username, !email, !password)) {
       res.fail("Please enter a value for fields.", 402);
@@ -21,7 +20,7 @@ export async function registerUser(req, res) {
     }
     const findUser = await User.findOne({ $or: [{ username }, { email }] });
     if (findUser) {
-      res.fail("username or email already exists.");
+      res.fail("username or email already exists.", 401);
       return;
     }
     const hashPassword = await bcryptjs.hash(password, 10);
@@ -38,6 +37,7 @@ export async function registerUser(req, res) {
     newUser.password = undefined;
     res.success("Your registration was done successfully!", newUser);
   } catch (e) {
+    console.log(e.message);
     res.fail(e.message, 500);
   }
 }
@@ -77,10 +77,7 @@ export async function loginUser(req, res) {
 }
 
 export async function signOut(req, res) {
-  console.log("signout...");
   if (req.username) {
-    console.log("clear cookie....");
-
     res.clearCookie("token");
     res.success("cookie cleared successfully!", 200);
   }
