@@ -5,7 +5,6 @@ const orderSchema = new mongoose.Schema(
     productId: {
       type: String,
       required: true,
-      unique: true,
     },
     img: {
       type: String,

@@ -11,7 +11,7 @@ import miscRoutes from "./routes/miscRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
-import paymentRoute from "./routes/paymentRoute.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 import corsMiddleware from "./middlewares/corsMiddleware.js";
 import { checkToken } from "./middlewares/authMiddleWare.js";
@@ -35,7 +35,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/orders", paymentRoute);
+app.use("/api/orders", orderRoutes);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
