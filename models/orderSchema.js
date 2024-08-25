@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -12,9 +12,13 @@ const orderSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: true,
+      required: true
     },
     sellerId: {
+      type: String,
+      required: true,
+    },
+    seller: {
       type: String,
       required: true,
     },

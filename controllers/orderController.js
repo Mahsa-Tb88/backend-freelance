@@ -9,7 +9,8 @@ export async function paymentProduct(req, res) {
   }
   try {
     const stripe = new Stripe(process.env.STRIPE);
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate("sellerId");
+    console.log(product.sellerId.username);
     const paymentIntent = await stripe.paymentIntents.create({
       amount: product.price * 100,
       currency: "cad",
@@ -23,6 +24,7 @@ export async function paymentProduct(req, res) {
       img: product.coverImage,
       title: product.title,
       sellerId: product.sellerId.toString(),
+      seller: product.sellerId.username,
       buyerId: req.userId,
       price: product.price,
       payment_intent: paymentIntent.id,
@@ -42,11 +44,26 @@ export async function paymentProduct(req, res) {
 export async function orderConfirm(req, res) {
   const payment_intent = req.body.payment_intent;
   try {
-    const order = await Order.findOneAndUpdate(
-      { payment_intent },
-      { isCompleted: true }
-    );
+    const order = await Order.findOneAndUpdate(payment_intent, {
+      isCompleted: true,
+    });
     res.success(" Coonfirm was Completed!", { payment_intent }, 200);
+  } catch (error) {
+    res.fail(error.message, 500);
+  }
+}
+
+export async function getAllOrdersOfUser(req, res) {
+  if (!req.userId) {
+    res.fail("You are not authorized. Please log in first.", 402);
+    return;
+  }
+
+  try {
+    let orders;
+    const query = { $or: [{ sellerId: req.userId }, { buyerId: req.userId }] };
+    orders = await Order.find(query);
+    res.success("orders was fetched successfully", orders, 200);
   } catch (error) {
     res.fail(error.message, 500);
   }
