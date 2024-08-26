@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import Product from "../models/productSchema.js";
 import Order from "../models/orderSchema.js";
+import Chat from "../models/chatSchema.js";
 
 export async function paymentProduct(req, res) {
   if (!req.username) {
@@ -45,6 +46,14 @@ export async function orderConfirm(req, res) {
     const order = await Order.findOneAndUpdate(payment_intent, {
       isCompleted: true,
     });
+    // console.log("jsonnn", JSON.parse(order.sellerId));
+
+    // const createChat = await Chat.create({
+    //   productId: order.productId,
+    //   chatId: order.sellerId.toString() + order.buyerId.toString(),
+    //   userId: order.buyerId,
+    //   desc: "",
+    // });
     res.success(" Coonfirm was Completed!", { payment_intent }, 200);
   } catch (error) {
     res.fail(error.message, 500);

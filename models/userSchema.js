@@ -22,9 +22,17 @@ const userSchema = new mongoose.Schema(
     country: {
       type: String,
     },
+    language: {
+      type: String,
+      default: "English",
+    },
     isSeller: {
       type: Boolean,
       default: false,
+    },
+    aveResponseTime: {
+      type: Number,
+      default: 1,
     },
     phoneNumber: {
       type: String,
