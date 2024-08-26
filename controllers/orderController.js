@@ -10,7 +10,6 @@ export async function paymentProduct(req, res) {
   try {
     const stripe = new Stripe(process.env.STRIPE);
     const product = await Product.findById(req.params.id).populate("sellerId");
-    console.log(product.sellerId.username);
     const paymentIntent = await stripe.paymentIntents.create({
       amount: product.price * 100,
       currency: "cad",
@@ -29,7 +28,6 @@ export async function paymentProduct(req, res) {
       price: product.price,
       payment_intent: paymentIntent.id,
     });
-
     await newOrder.save();
     res.success(
       " payment successfully send",

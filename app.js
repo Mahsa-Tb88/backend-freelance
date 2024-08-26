@@ -12,6 +12,7 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import reviewsRoutes from "./routes/reviewRoutes.js";
 
 import corsMiddleware from "./middlewares/corsMiddleware.js";
 import { checkToken } from "./middlewares/authMiddleWare.js";
@@ -36,6 +37,7 @@ app.use("/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);
