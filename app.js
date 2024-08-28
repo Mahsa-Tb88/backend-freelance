@@ -39,7 +39,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewsRoutes);
-app.use("/api/chat", chatRoutes);
+app.use("/api/chats", chatRoutes);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);

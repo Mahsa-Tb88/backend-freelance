@@ -2,10 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const chatSchema = new mongoose.Schema(
   {
-    productId: {
-      type: String,
-      required: true,
-    },
     chatId: {
       type: String,
       required: true,
