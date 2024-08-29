@@ -6,13 +6,17 @@ const chatSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    userId: {
+    fromUserId: {
       type: String,
       required: true,
     },
     desc: {
       type: String,
       default: "",
+    },
+    isSeen: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

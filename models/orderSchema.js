@@ -12,17 +12,19 @@ const orderSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: true
-    },
-    sellerId: {
-      type: String,
       required: true,
     },
-    seller: {
-      type: String,
+    sellerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     buyerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    chatId: {
       type: String,
       required: true,
     },

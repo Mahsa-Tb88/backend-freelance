@@ -11,6 +11,7 @@ export async function paymentProduct(req, res) {
   try {
     const stripe = new Stripe(process.env.STRIPE);
     const product = await Product.findById(req.params.id).populate("sellerId");
+    // const product = await Product.findById(req.params.id);
     const paymentIntent = await stripe.paymentIntents.create({
       amount: product.price * 100,
       currency: "cad",
@@ -18,13 +19,13 @@ export async function paymentProduct(req, res) {
         enabled: true,
       },
     });
-
     const newOrder = new Order({
       productId: product._id.toString(),
       img: product.coverImage,
       title: product.title,
-      sellerId: product.sellerId.toString(),
+      sellerId: product.sellerId._id.toString(),
       seller: product.sellerId.username,
+      chatId: product._id.toString() + req.userId,
       buyerId: req.userId,
       price: product.price,
       payment_intent: paymentIntent.id,
@@ -46,13 +47,7 @@ export async function orderConfirm(req, res) {
     const order = await Order.findOneAndUpdate(payment_intent, {
       isCompleted: true,
     });
-    // console.log("jsonnn", JSON.parse(order.sellerId));
 
-    const createChat = await Chat.create({
-      chatId: order.productId + order.buyerId.toString(),
-      userId: order.buyerId,
-      desc: "",
-    });
     res.success(" Coonfirm was Completed!", { payment_intent }, 200);
   } catch (error) {
     res.fail(error.message, 500);
@@ -60,6 +55,7 @@ export async function orderConfirm(req, res) {
 }
 
 export async function getAllOrdersOfUser(req, res) {
+  console.log("req.userID...", req.userId);
   if (!req.userId) {
     res.fail("You are not authorized. Please log in first.", 402);
     return;
@@ -68,7 +64,7 @@ export async function getAllOrdersOfUser(req, res) {
   try {
     let orders;
     const query = { $or: [{ sellerId: req.userId }, { buyerId: req.userId }] };
-    orders = await Order.find(query);
+    orders = await Order.find(query).populate("sellerId").populate("buyerId");
     res.success("orders was fetched successfully", orders, 200);
   } catch (error) {
     res.fail(error.message, 500);
