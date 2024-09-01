@@ -34,7 +34,6 @@ app.use(checkToken);
 app.use(miscRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use("/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);

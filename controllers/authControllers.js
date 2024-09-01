@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs";
 import User from "../models/userSchema.js";
 import jwt from "jsonwebtoken";
 import Msg from "../models/msgSchema.js";
+import Order from "../models/orderSchema.js";
 
 export async function registerUser(req, res) {
   const {
@@ -61,9 +62,18 @@ export async function loginUser(req, res) {
       res.fail("username or password is not valid.", 402);
       return;
     }
-    const msgs = await Msg.find({ to: username, isSeen: false });
 
+    // find number of unread msgs
+    const msgs = await Msg.find({ to: username, isSeen: false });
     const unreadMsgs = msgs.length;
+
+    //find number of unseen orders
+    const orders = await Order.find({
+      sellerId: user._id.toString(),
+      isSeen: false,
+    });
+    const unSeenOrders = orders.length;
+
     const match = await bcryptjs.compare(password, user.password);
     if (!match) {
       res.fail("username or password is not valid.", 402);
@@ -78,7 +88,7 @@ export async function loginUser(req, res) {
       secure: false,
     });
     user.password = undefined;
-    res.success("Logged in successfully!", { user, unreadMsgs });
+    res.success("Logged in successfully!", { user, unreadMsgs, unSeenOrders });
   } catch (error) {
     res.fail(error.message, 500);
   }

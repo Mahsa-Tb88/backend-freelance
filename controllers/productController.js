@@ -46,6 +46,7 @@ export async function createProduct(req, res) {
 }
 
 export async function getProductById(req, res) {
+
   const isValid = mongoose.isValidObjectId(req.params.id);
   if (!isValid) {
     res.fail("Its not a valid id.", 402);
