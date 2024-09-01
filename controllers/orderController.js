@@ -4,7 +4,6 @@ import Order from "../models/orderSchema.js";
 import Chat from "../models/chatSchema.js";
 
 export async function paymentProduct(req, res) {
-  console.log("...", req.params.id);
   if (!req.username) {
     res.fail("Please Login First!", 402);
     return;
@@ -20,11 +19,7 @@ export async function paymentProduct(req, res) {
         enabled: true,
       },
     });
-    // const newChat = new Chat({
-    //   chatId:product._id.toString() + req.userId,
-    //   fromUserId:req.userId,
-
-    // })
+    
     const newOrder = new Order({
       productId: product._id.toString(),
       img: product.coverImage,
@@ -36,7 +31,6 @@ export async function paymentProduct(req, res) {
       payment_intent: paymentIntent.id,
       isSeen: false,
     });
-    console.log(newOrder);
     await newOrder.save();
     res.success(
       " payment successfully send",
@@ -79,14 +73,14 @@ export async function getAllOrdersOfUser(req, res) {
   }
 }
 
-export async function getMessageListOfUser(req, res) {
-  if (req.userId != req.params.id) {
-    res.fail("You are not authorized!", 402);
-    return;
-  }
-  try {
-    const query = { $or: [{ sellerId: req.userId }, { buyerId: req.userId }] };
-    const products = await Product.find(query);
-    console.log(products);
-  } catch (error) {}
-}
+// export async function getMessageListOfUser(req, res) {
+//   if (req.userId != req.params.id) {
+//     res.fail("You are not authorized!", 402);
+//     return;
+//   }
+//   try {
+//     const query = { $or: [{ sellerId: req.userId }, { buyerId: req.userId }] };
+//     const products = await Product.find(query);
+//     console.log(products);
+//   } catch (error) {}
+// }

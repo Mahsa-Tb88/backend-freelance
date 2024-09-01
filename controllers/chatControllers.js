@@ -1,3 +1,4 @@
+import { isSeller } from "../middlewares/authMiddleWare.js";
 import Chat from "../models/chatSchema.js";
 import Msg from "../models/msgSchema.js";
 import Order from "../models/orderSchema.js";
@@ -5,32 +6,32 @@ import Order from "../models/orderSchema.js";
 export async function getChatById(req, res) {
   try {
     const chats = await Chat.find({ chatId: req.params.id });
-    const order = await Order.findOne({ chatId: req.params.id });
-    //
-    const msg = await Msg.findOne({ chatId: req.params.id });
-    if (!msg) {
-      await Msg.create({
-        chatId: req.params.id,
-        fromUserId: req.userId,
-        toUserId: req.isSeller ? order.buyerId : order.sellerId,
-        isSeen: false,
-      });
-    } else {
-      // await Msg.findOneAndUpdate({ chatId: req.params.id }, { isSeen: true });
-    }
+    const order = await Order.findOne({ chatId: req.params.id })
+      .populate("sellerId")
+      .populate("buyerId");
 
-    //
-
+    // show message just to two these users
     if (
-      req.userId == order.sellerId.toString() ||
-      req.userId == order.buyerId.toString()
+      req.userId == order.sellerId._id.toString() ||
+      req.userId == order.buyerId._id.toString()
     ) {
-      const updateChats = await Chat.updateMany(
+      // we update message from other user
+      await Chat.updateMany(
         {
           chatId: req.params.id,
-          fromUserId: req.isSeller
-            ? order.buyerId.toString()
-            : order.sellerId.toString(),
+          userId: req.isSeller
+            ? order.buyerId._id.toString()
+            : order.sellerId._id.toString(),
+        },
+        { isSeen: true }
+      );
+
+      // update msg for list of msg
+
+      await Msg.findOneAndUpdate(
+        {
+          chatId: req.params.id,
+          from: req.isSeller ? order.buyerId.username : order.sellerId.username,
         },
         { isSeen: true }
       );
@@ -40,8 +41,6 @@ export async function getChatById(req, res) {
       res.fail("You are not athorized", 402);
       return;
     }
-
-    // console.log(req.params.id,)
   } catch (error) {
     res.fail(error.message, 500);
   }
@@ -54,23 +53,39 @@ export async function sendChat(req, res) {
     const chat = await Chat.create({
       chatId,
       desc,
-      fromUserId: req.userId,
+      userId: req.userId,
       isSeen: false,
     });
+    // create msg
+    const msg = await Msg.findOne({ chatId });
+    const order = await Order.findOne({ chatId })
+      .populate("sellerId")
+      .populate("buyerId");
 
-    const updateMSG = await Msg.findOneAndUpdate(
-      { chatId },
-      { $set: { lastMsg: desc, isSeen: false } }
-    );
-    console.log("updateeea", updateMSG);
+    if (!msg) {
+      await Msg.create({
+        chatId,
+        from: req.username,
+        to: req.isSeller ? order.buyerId.username : order.sellerId.username,
+        lastMsg: desc,
+        isSeen: false,
+      });
+    } else {
+      await Msg.findOneAndUpdate(
+        { chatId },
+        {
+          $set: {
+            from: req.username,
+            to: req.isSeller ? order.buyerId.username : order.sellerId.username,
+            lastMsg: desc,
+            isSeen: false,
+          },
+        }
+      );
+    }
 
     res.success("new chat was created successfully", chat, 200);
   } catch (error) {
     res.fail(error.message, 500);
   }
-}
-
-export async function chatList() {
-  try {
-  } catch (error) {}
 }

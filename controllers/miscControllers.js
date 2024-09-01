@@ -1,3 +1,4 @@
+import Msg from "../models/msgSchema.js";
 import User from "../models/userSchema.js";
 
 export async function initialize(req, res) {
@@ -6,8 +7,10 @@ export async function initialize(req, res) {
     if (req.username) {
       user = await User.findOne({ username: req.username });
     }
+    const msgs = await Msg.find({ to: req.username, isSeen: false });
+    const unreadMsgs = msgs.length;
     user.password = undefined;
-    res.success("Initialization was done successfully!", { user });
+    res.success("Initialization was done successfully!", { user, unreadMsgs });
   } catch (error) {
     res.fail(error.message, 500);
   }
