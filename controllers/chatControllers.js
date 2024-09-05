@@ -33,7 +33,8 @@ export async function getChatById(req, res) {
           chatId: req.params.id,
           from: req.isSeller ? order.buyerId.username : order.sellerId.username,
         },
-        { isSeen: true }
+        { isSeen: true },
+        { new: true }
       );
 
       res.success("chats were fetched successfully", chats, 200);

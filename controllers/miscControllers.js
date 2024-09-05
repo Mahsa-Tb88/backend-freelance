@@ -12,6 +12,8 @@ export async function initialize(req, res) {
     const msgs = await Msg.find({ to: req.username, isSeen: false });
     const unreadMsgs = msgs.length;
 
+    console.log("unread...", unreadMsgs);
+
     //find number of unseen orders
     const orders = await Order.find({ sellerId: req.userId, isSeen: false });
     const unSeenOrders = orders.length;
