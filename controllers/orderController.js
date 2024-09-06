@@ -71,6 +71,17 @@ export async function getAllOrdersOfUser(req, res) {
   }
 }
 
+export async function getUnSeenOrder(req, res) {
+  try {
+    //find number of unseen orders
+    const orders = await Order.find({ sellerId: req.userId, isSeen: false });
+    const unSeenOrder = orders.length;
+    res.success("Get unSeen Order Succesfully", { unSeenOrder }, 200);
+  } catch (error) {
+    res.fail(error.message, 500);
+  }
+}
+
 export async function seenOrder(req, res) {
   const { id } = req.params;
   try {
