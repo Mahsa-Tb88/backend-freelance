@@ -6,7 +6,10 @@ const msgSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+    product: {
+      type: String,
+      required: true,
+    },
     from: {
       type: String,
       required: true,

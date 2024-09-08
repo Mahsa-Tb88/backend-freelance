@@ -3,7 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const orderSchema = new mongoose.Schema(
   {
     productId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Product",
       required: true,
     },
     img: {

@@ -64,8 +64,8 @@ export async function deleteReview(req, res) {
       res.fail("You are not authorized!", 402);
       return;
     }
-
     await Review.findByIdAndDelete(req.params.id);
+
     /// update totalstar of product
     let newTotalStar;
     const reviews = await Review.find({ productId: review.productId });
@@ -73,7 +73,11 @@ export async function deleteReview(req, res) {
       (sum, review) => sum + review.rateStar,
       0
     );
-    newTotalStar = sumRateStar / reviews.length;
+    if (reviews.length) {
+      newTotalStar = sumRateStar / reviews.length;
+    } else {
+      newTotalStar = 1;
+    }
 
     await Product.findByIdAndUpdate(review.productId, {
       totalStar: Math.floor(newTotalStar),

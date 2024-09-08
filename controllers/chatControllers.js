@@ -61,11 +61,13 @@ export async function sendChat(req, res) {
     const msg = await Msg.findOne({ chatId });
     const order = await Order.findOne({ chatId })
       .populate("sellerId")
-      .populate("buyerId");
+      .populate("buyerId")
+      .populate("productId");
 
     if (!msg) {
       await Msg.create({
         chatId,
+        product: order.productId.title,
         from: req.username,
         to: req.isSeller ? order.buyerId.username : order.sellerId.username,
         lastMsg: desc,
