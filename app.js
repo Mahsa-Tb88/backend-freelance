@@ -9,12 +9,12 @@ import responseMiddleWares from "./middlewares/responseMiddlewares.js";
 import miscRoutes from "./routes/miscRoutes.js";
 
 import authRoutes from "./routes/authRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import reviewsRoutes from "./routes/reviewRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import msgListRoutes from "./routes/msgListRoutes.js";
+import sellerRoutes from "./routes/sellerRoutes.js";
 
 import corsMiddleware from "./middlewares/corsMiddleware.js";
 import { checkToken } from "./middlewares/authMiddleWare.js";
@@ -35,12 +35,13 @@ app.use(miscRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/auth", authRoutes);
-app.use("/api/users", userRoutes);
+
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewsRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/msgList", msgListRoutes);
+app.use("/api/sellers", sellerRoutes);
 
 try {
   await mongoose.connect(process.env.MONGO_URL);

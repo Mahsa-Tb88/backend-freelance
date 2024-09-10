@@ -6,8 +6,10 @@ export async function checkToken(req, res, next) {
     const token = req.cookies.token;
     const decode = jwt.verify(token, process.env.SECRET_KEY);
     try {
-      const user = await User.findOne({ username: decode.username });
-      req.username = user.username;
+      const user = await User.findOne({
+        username: decode.username.toLowerCase(),
+      });
+      req.username = user.username.toLowerCase();
       req.isSeller = user.isSeller;
       req.userId = user._id.toString();
       if (req.isSeller) {

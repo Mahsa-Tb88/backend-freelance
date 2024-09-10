@@ -17,19 +17,22 @@ export async function registerUser(req, res) {
     phoneNumber,
     desc,
   } = req.body;
+  const myUsername = username.toLowerCase();
   try {
     if ((!username, !email, !password)) {
       res.fail("Please enter a value for fields.", 402);
       return;
     }
-    const findUser = await User.findOne({ $or: [{ username }, { email }] });
+    const findUser = await User.findOne({
+      $or: [{ username: myUsername }, { email }],
+    });
     if (findUser) {
       res.fail("username or email already exists.", 401);
       return;
     }
     const hashPassword = await bcryptjs.hash(password, 10);
     const newUser = await User.create({
-      username,
+      username: myUsername,
       email,
       password: hashPassword,
       profileImg,
@@ -57,14 +60,14 @@ export async function loginUser(req, res) {
   }
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username: username.toLowerCase() });
     if (!user) {
       res.fail("username or password is not valid.", 402);
       return;
     }
 
     // find number of unread msgs
-    const msgs = await Msg.find({ to: username, isSeen: false });
+    const msgs = await Msg.find({ to: username.toLowerCase(), isSeen: false });
     const unreadMsgs = msgs.length;
 
     //find number of unseen orders
