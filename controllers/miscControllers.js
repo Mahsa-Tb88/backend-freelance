@@ -6,7 +6,6 @@ export async function initialize(req, res) {
     if (req.username) {
       user = await User.findOne({ username: req.username });
     }
-
     user.password = undefined;
     res.success("Initialization was done successfully!", { user }, 200);
   } catch (error) {
