@@ -8,7 +8,7 @@ export async function createReviewsOfProduct(req, res) {
     return;
   }
 
-  if (req.username !== buyer) {
+  if (req.username.toLowerCase() !== buyer.toLowerCase()) {
     res.fail("You are not authorized!", 402);
     return;
   }
@@ -60,7 +60,7 @@ export async function getReviewsOfProduct(req, res) {
 export async function deleteReview(req, res) {
   try {
     const review = await Review.findById(req.params.id);
-    if (req.username !== review.buyer) {
+    if (req.username.toLowerCase() !== review.buyer.toLowerCase()) {
       res.fail("You are not authorized!", 402);
       return;
     }

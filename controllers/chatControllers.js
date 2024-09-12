@@ -5,7 +5,7 @@ import Order from "../models/orderSchema.js";
 
 export async function getChatById(req, res) {
   try {
-    const chats = await Chat.find({ chatId: req.params.id });
+    const chats = await Chat.find({ chatId: req.params.id }).populate("userId");
     const order = await Order.findOne({ chatId: req.params.id })
       .populate("sellerId")
       .populate("buyerId");
