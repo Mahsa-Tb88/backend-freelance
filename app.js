@@ -17,7 +17,7 @@ import msgListRoutes from "./routes/msgListRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
 
 import corsMiddleware from "./middlewares/corsMiddleware.js";
-import { checkToken } from "./middlewares/authMiddleWare.js";
+import { checkToken } from "./middlewares/authMiddleware.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 

@@ -1,11 +1,11 @@
 import express from "express";
-import uploadMiddleWare from "../middlewares/uploadMiddleWare.js";
+import uploadMiddleware from "../middlewares/uploadMiddleware.js";
 import { initialize, uploadFile } from "../controllers/miscControllers.js";
 import multer from "multer";
 
 const router = express.Router();
 router.get("/misc/initialize", initialize);
-router.post("/uploads", uploadMiddleWare, uploadFile);
+router.post("/uploads", uploadMiddleware, uploadFile);
 const app = express();
 
 

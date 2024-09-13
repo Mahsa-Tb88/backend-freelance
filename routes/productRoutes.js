@@ -7,7 +7,7 @@ import {
   getAllProducts,
   deleteProduct,
 } from "../controllers/productController.js";
-import { isSeller } from "../middlewares/authMiddleWare.js";
+import { isSeller } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
