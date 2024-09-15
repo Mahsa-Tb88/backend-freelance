@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import fs from "fs";
 dotenv.config();
 
 import responseMiddleWares from "./middlewares/responseMiddlewares.js";
@@ -17,9 +18,9 @@ import msgListRoutes from "./routes/msgListRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
 
 import corsMiddleware from "./middlewares/corsMiddleware.js";
-import { checkToken } from "./middlewares/authMiddleware.js";
+import { checkToken } from "./middlewares/authMiddleWare.js";
 import cookieParser from "cookie-parser";
-import cors from "cors";
+// import cors from "cors";
 
 const app = express();
 app.use(express.json());
@@ -43,6 +44,7 @@ app.use("/api/chats", chatRoutes);
 app.use("/api/msgList", msgListRoutes);
 app.use("/api/sellers", sellerRoutes);
 
+
 try {
   await mongoose.connect(process.env.MONGO_URL);
   console.log("connected to database");
@@ -50,6 +52,8 @@ try {
   app.listen(3000, () => {
     console.log("Server is running on http://localhost3000");
   });
+
+ 
 } catch (e) {
   console.log(e.message);
 }

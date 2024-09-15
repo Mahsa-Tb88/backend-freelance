@@ -16,9 +16,8 @@ export async function getMsgList(req, res) {
 }
 export async function getUnreadMsg(req, res) {
   try {
-    // find number of unreed Messages
-    const msgs = await Msg.find({ to: req.username, isSeen: false });
-    const unreadMsg = msgs.length;
+    
+    const unreadMsg = await Msg.find({ to: req.username, isSeen: false });
     res.success("get unSeen Msgs successfully!", { unreadMsg }, 200);
   } catch (error) {
     res.fail(error.message, 500);
